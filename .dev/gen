@@ -1,0 +1,8 @@
+#!/bin/bash -e
+N=$1;F(){ echo -n "\$(cat<<'${1}'|base64 -d|gunzip@$(cat data/${1}${2}|gzip -9fc|base64|tr -d "\n")@${1}@)"|sed 's/@/\n/g';};cat<<OUT>result/$N;chmod +x result/$N
+#!/bin/bash
+g=0;for L in xxd gunzip base64 sed;do type \$L&>/dev/null;[ \$? != 0 ]&&{ echo "require \$L";g=1;};done;[ \$g = 1 ]&&exit 1;A=($(F "$2" ".string"));B=$(F "$2" ".help");$(cat<<'CD'
+case $1 in [0-9]*)[ $1 -lt ${#A[@]} ]&&echo -n "${A[$1]}@"|sed 's/@/\n/g'|sed 's/§/ /g'||{ echo "Input is less than ${#A[@]} (${1})";};;"all")for C in $(seq ${#A[@]});do echo -n "${A[$C]}@@@"|sed 's/@/\n/g'|sed 's/§/ /g';done;;"help"|"h")echo "${B}";;*)echo -n "${A[$(($RANDOM%${#A[@]}))]}@"|sed 's/@/\n/g'|sed 's/§/ /g';;esac 2>/dev/null
+CD
+)
+OUT

@@ -1,0 +1,10 @@
+#!/bin/bash
+mk(){ ./.dev/gen $1 $2 2>/dev/null;}
+: 'mk <out> <data>                                     '
+: 'example                                             '
+: ' mk unko buri                                       '
+: '  output : unko  (data:buri.string, help:buri.help) '
+
+####------------------------------------------------####
+
+mk takada-legend takada
